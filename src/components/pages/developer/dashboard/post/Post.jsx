@@ -26,8 +26,7 @@ const Post = () => {
       } = useQueryData (
        "/v1/post", // endpoint
        "get", // method
-       "post", // key
-       
+       "post", // key      
       );
 
 
@@ -65,7 +64,7 @@ const Post = () => {
     </div>
     </main>
 
-    {store.isAdd && <ModalAddPost  itemEdit={itemEdit}/>}
+    {store.isAdd && <ModalAddPost  itemEdit={itemEdit} position="center"/>}
 
     {store.error && <ModalError position="center"/>}
     {store.success && <Toast/>}

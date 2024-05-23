@@ -17,6 +17,8 @@ function App() {
                 <Route path="/home" element={<Home/>}/>
                 <Route path="/single" element={<Single/>}/>
                 <Route path="/dashboard/post" element={<Post/>}/>
+                
+                
               </Routes>
           </Router>
         </StoreProvider>
