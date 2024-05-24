@@ -9,7 +9,7 @@ const UIHeader = () => {
   return (
 
     <header>
-        <div className='bg-accent text-primary'>
+        <div className='bg-secondary text-primary'>
             <div className="container">
                 <div className="flex justify-between items-center py-2">
                     <ul className='flex gap-4'>

@@ -9,7 +9,7 @@ import ModalDelete from '../../../../partials/modals/ModalDelete'
 import { StoreContext } from '../../../../../store/StoreContext'
 import { setIsActive, setIsAdd, setIsDelete } from '../../../../../store/StoreAction'
 
-const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
+const TagTable = ({isLoading, isFetching, tag, setItemEdit}) => {
     const {store, dispatch} = React.useContext(StoreContext)
     const [isArchiving, setIsArchiving] = React.useState(0);
     const [id, setId] = React.useState('')
@@ -18,18 +18,18 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
 
     const handleArchive = (item) => {
         dispatch(setIsActive(true));
-        setId(item.post_aid)
+        setId(item.tag_aid)
         setIsArchiving(0)
     }
     const handleRestore = (item) => {
         dispatch(setIsActive(true));
-        setId(item.post_aid)
+        setId(item.tag_aid)
         setIsArchiving(1)
     }
 
     const handleDelete = (item) => {
         dispatch(setIsDelete(true))
-        setId(item.post_aid)
+        setId(item.tag_aid)
     }
 
     const handleHandle = (item) => {
@@ -38,9 +38,7 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
     }
 
 
-
-
-  return (
+return (
     <>
 
 <div className="table-wrapper relative">
@@ -48,10 +46,8 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
             <table>
                 <thead>
                     <tr>
-                        <th className='w-[20px]'>#</th>
-                        <th className='w-[150px]'>Title</th>
-                        <th className='w-[80px]'>Category</th>
-                        <th className='w-[80px]'>Published</th>
+                        <th className='w-[10px]'>#</th>
+                        <th className='w-[90%]'>Tag</th>
                         <th className='w-[100px]'>Action</th>
                     </tr>
                 </thead>
@@ -65,7 +61,7 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
                     </tr>)
                     }
 
-        {post?.data.length === 0 && (
+        {tag?.data.length === 0 && (
             <tr>
                 <td colSpan={9}>
                     <NoData/>
@@ -73,15 +69,13 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
             </tr>
         )}
             
-            {post?.data.map((item, key)=>(
+            {tag?.data.map((item, key)=>(
                 <tr key={key}>
-                    <td>{counter++}</td>
-                    <td>{item.post_title}</td>
-                    <td>{item.category_title}</td>
-                    <td>{item.post_publish_date}</td>
+                    <td >{counter++}</td>
+                    <td>{item.tag_title}</td>
                     <td className='table-action'>
                         <ul>
-                            {item.post_is_active ? (
+                            {item.tag_is_active ? (
                                 <>
                                     <li><button onClick={()=>handleHandle(item)} className="tooltip" data-tooltip="Edit" ><LiaEdit/></button></li>
                                     <li><button onClick={()=>handleArchive(item)} className="tooltip" data-tooltip="Archive" ><PiArchive /></button></li>
@@ -101,10 +95,10 @@ const PostTable = ({isLoading, isFetching, post, setItemEdit}) => {
         </table>
     </div>
 
-    {store.isActive && <ModalConfirmed position="center"  queryKey="post" endpoint={`/v1/post/active/${id}`} isArchiving={isArchiving}/>}  
-    {store.isDelete && <ModalDelete position="center" endpoint={`/v1/post/${id}`} queryKey="post"/>}
+    {store.isActive && <ModalConfirmed position="center"  queryKey="tag" endpoint={`/v1/tag/active/${id}`} isArchiving={isArchiving}/>}  
+    {store.isDelete && <ModalDelete position="center" endpoint={`/v1/tag/${id}`} queryKey="tag"/>}
     </>
   )
 }
 
-export default PostTable
+export default TagTable

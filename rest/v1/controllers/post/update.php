@@ -10,7 +10,7 @@ if (array_key_exists("postid", $_GET)) {
     $post->post_title = checkIndex($data, "post_title");
     $post->post_photo = strtolower($data["post_photo"]);
     $post->post_author = strtolower($data["post_author"]);
-    $post->post_category = checkIndex($data, "post_category");
+    $post->post_category_id = checkIndex($data, "post_category_id");
     $post->post_publish_date = checkIndex($data, "post_publish_date");
     $post->post_article = checkIndex($data, "post_article");
     $post->post_datetime = date("Y-m-d H:i:s");

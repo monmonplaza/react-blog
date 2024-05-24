@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const UIFooter = () => {
   return (
-    <footer className='pt-12 pb-6 bg-header text-white text-center px-2 mt-5'>
+    <footer className='pt-12 pb-6 bg-secondary text-white text-center px-2 mt-5'>
         <h2 className='text-white text-5xl'>BLOG</h2>
         <h4 className='text-white text-2xl'>Subscribe to our Newletter</h4>
         <p> Be the first to get notified about new posts subscribe our newsletter.</p>

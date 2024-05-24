@@ -22,6 +22,8 @@ const Single = () => {
        "post", // key
       );
 
+      
+
 
       const {
         isLoading:sideIsLoading,
@@ -31,11 +33,10 @@ const Single = () => {
       } = useQueryData (
        `/v1/post`, // endpoint
        "get", // method
-       "post", // key
+       "postx", // key
       );
 
 
-      console.log(latestpost?.data)
 
 
       
@@ -47,18 +48,29 @@ const Single = () => {
             <>
                  <div className='banner mt-5 mb-10'>
                       <div className="container">
-                           <h1 className='max-w-[800px]  mb-0 mx-auto py-10 px-5 bg-header bg-opacity-10 rounded-lg border-2 border-header border-opacity-40'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
+                           <h1 className='max-w-[800px]  mb-0 mx-auto py-10 px-5 bg-header bg-opacity-10 rounded-lg border-2 border-header border-opacity-40'>
+                            {post?.data[0].post_title}
+                           </h1>
                        </div>
                    </div>
                   <div className="container">
                       <div className='grid md:grid-cols-[2fr_1fr] gap-10'>
-                    
+
+
+                            <div>
+                                <img src={`${devBaseImgUrl}/${post?.data[0].post_photo}`} alt="" />
+
                               <article >
+                                <ul className='flex justify-between items-center list-none'>
+                                    <li>{post?.data[0].post_category}</li>
+                                    <li>{post?.data[0].post_publish_date}</li>
+                                </ul>
                                 <Markdown > 
                                     {post?.data[0].post_article}
                                 </Markdown > 
-                                  
                               </article>
+                            </div>
+
                           <aside >
           
                               <div className='sticky top-4'>
@@ -81,7 +93,7 @@ const Single = () => {
                                   <div className="shadow-[4px_2px_10px_5px_rgba(0,0,0,0.1)]  p-5 rounded-2xl mb-5 ">
                                       <h2>Latest Post</h2>
                                     {sideIsLoading ? <SpinnerWindow/> : (
-                                        latestpost?.data.slice(0, 2).map((item, key)=> (
+                                        latestpost?.data.slice(0, 3).map((item, key)=> (
                                             
                                             <div className='grid grid-cols-[90px_1fr] gap-3 mb-4' key={key}>
                                                 <img src={`${devBaseImgUrl}/${item.post_photo}`} alt="" className='h-full w-full object-cover'/>
@@ -101,16 +113,7 @@ const Single = () => {
                       </div>
                   </div>
             </>
-        )
-
-          
-               
-          
-          
-        
-        }
-
-      
+        )}     
         <UIFooter/>
     </>
   )

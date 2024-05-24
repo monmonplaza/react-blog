@@ -11,7 +11,7 @@ import useQueryData from '../../../../custom-hook/useQueryData'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryData } from '../../../../helpers/queryData'
 import ModalWrapper from '../../../../partials/modals/ModalWrapper'
-import { InputFileUpload, InputText, InputTextArea } from '../../../../helpers/FormInputs'
+import { InputFileUpload, InputSelect, InputText, InputTextArea } from '../../../../helpers/FormInputs'
 import SpinnerButton from '../../../../partials/spinners/SpinnerButton'
 import { devBaseImgUrl } from '../../../../helpers/functions-general'
 
@@ -32,12 +32,13 @@ const ModalAddPost = ({itemEdit, position }) => {
         isLoading,
         isFetching,
         error,
-        data: post,
+        data: category,
       } = useQueryData(
-        `/v1/post`, // endpoint
+        `/v1/category`, // endpoint
         "get", // method
-        "post" // key
+        "category" // key
       );
+
 
 
 
@@ -70,7 +71,7 @@ const ModalAddPost = ({itemEdit, position }) => {
     const initVal = {
         post_photo: itemEdit ? itemEdit.post_photo : "",
         post_title : itemEdit ? itemEdit.post_title : "",
-        post_category : itemEdit ? itemEdit.post_category : "",
+        post_category_id : itemEdit ? itemEdit.post_category_id : "",
         post_article : itemEdit ? itemEdit.post_article : "",
         post_author : itemEdit ? itemEdit.post_author : "",
         post_publish_date : itemEdit ? itemEdit.post_publish_date : "",
@@ -112,52 +113,17 @@ const ModalAddPost = ({itemEdit, position }) => {
                           return (
                       <Form  className='flex flex-col'>
                       <div className='grow overflow-y-auto mb-5'>
-
+                            <div className="input-wrap">
+                                <InputText
+                                    label="Title"
+                                    type="text"
+                                    name="post_title"
+                                />
+                            </div>
                             <div className='grid grid-cols-[1fr_2fr] gap-10'>
-                            <div className='left'>
-                         
+                                <div className='left'>
 
-                            
-                              <div className="input-wrap">
-                                  <InputText
-                                      label="Title"
-                                      type="text"
-                                      name="post_title"
-                                  />
-                              </div>
-
-                              <div className="input-wrap">
-                                  <InputText
-                                      label="Category"
-                                      type="text"
-                                      name="post_category"
-                                  />
-                              </div>
-
-                            
-                             
-
-                              <div className="input-wrap">
-                                  <InputText
-                                      label="Publish Date"
-                                      type="text"
-                                      name="post_publish_date"
-                                  />
-                              </div>
-
-                              
-                              <div className="input-wrap">
-                                  <InputText
-                                      label="Author"
-                                      type="text"
-                                      name="post_author"
-                                  />
-                              </div>
-
-                              </div>
-
-                              <div className='right'>
-                                <div className="input-wrap">
+                            <div className="input-wrap">
                                         {photo || (itemEdit && itemEdit.post_photo !== "") ? (
                                         <img  src={photo
                                           ? URL.createObjectURL(photo) // preview
@@ -169,8 +135,8 @@ const ModalAddPost = ({itemEdit, position }) => {
                                           className="rounded-tr-md rounded-tl-md h-[200px] max-h-[200px] w-full object-cover object-center m-auto"
                                         />
                                         ) : (
-                                          <span className="min-h-20 flex items-center justify-center">
-                                          <span className="text-accent mr-1">Drag & Drop</span>{" "}
+                                          <span className="w-full h-[200px] flex items-center justify-center">
+                                          <span className="text-accent mr-1 ">Drag & Drop</span>{" "}
                                           photo here or{" "}
                                           <span className="text-accent ml-1">Browse</span>
                                           </span>
@@ -196,22 +162,66 @@ const ModalAddPost = ({itemEdit, position }) => {
                                             onDrop={(e) => handleChangePhoto(e)}
                                             className="opacity-0 absolute right-0 bottom-0 left-0 m-auto cursor-pointer h-full "
                                         />
-
-
-
                                         </div>
+
+                                        <div className="input-wrap">
+                                            <InputText
+                                                label="Tag"
+                                                type="text"
+                                                name="post_category"
+                                            />
+
+                                            
+                                        </div>
+
+                                        <div className="input-wrap">
+                                        <InputSelect
+                                            label="Category"
+                                            type="text"
+                                            name="post_category_id">
+                                                {category?.data.map((item, key)=> (
+                                                    <React.Fragment key={key}>
+                                                        <option hidden>Select</option>
+                                                        <option value={item.category_aid} >{item.category_title}</option>
+                                                    </React.Fragment >
+                                                )
+                                            )} 
+                                        </InputSelect>
+                                        </div>
+                             
+
+                              <div className="input-wrap">
+                                  <InputText
+                                      label="Publish Date"
+                                      type="date"
+                                      name="post_publish_date"
+                                  />
+                              </div>
+
+                              
+                              <div className="input-wrap">
+                                  <InputText
+                                      label="Author"
+                                      type="text"
+                                      name="post_author"
+                                  />
+                              </div>
+
+                                  </div>
+
+                              <div className='right'>
+                               
 
                                   <div className="input-wrap">
                                     <InputTextArea
-                                          label="Description"
+                                          label="Article"
                                           type="text"
                                           name="post_article"
-                                          className='h-[20rem] resize-none'
+                                          className='h-[29.7rem] resize-none'
                                       />
                                   </div>
                               </div>
-
-                             
+                           
                             </div>
                       </div>
 
