@@ -11,7 +11,7 @@ const Card = ({height="lg", item}) => {
     <img src={`${devBaseImgUrl}/${item?.post_photo}`} alt="" className={`w-full object-cover $ rounded-xl  h-full overflow-hidden  hover:scale-110 transition-transform`}/>
     </div>
     <small className='hover:bg-accent bg-stone-600  px-2 py-1 rounded-lg text-white font-bold 
-        text-xs'>Travel</small>
+        text-xs'>{item.tag_title}</small>
 
         <h3 className='my-4'>{item?.post_title}</h3>
         <p className='line-clamp-3 text-balance'>{item?.post_article}</p>

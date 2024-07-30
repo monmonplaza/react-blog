@@ -11,6 +11,7 @@ import ModalError from '../../../../partials/modals/ModalError'
 import Toast from '../../../../partials/Toast'
 import Searchbar from '../../../../partials/Searchbar'
 import ModalAddPost from './ModalAddPost'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const Post = () => {
     const {store, dispatch} = React.useContext(StoreContext)
@@ -53,9 +54,10 @@ const Post = () => {
 
             <div className='tab flex justify-between items-center mt-8 border-b border-line mb-8 '>
                 <h2>Seacrh</h2>
-                <button className='btn btn--accent' onClick={handleAdd} >
+                <motion.button className='btn btn--accent' onClick={handleAdd}  whileTap={{ scale: 0.97 }}
+>
                     <FiPlus/> New
-                </button>
+                </motion.button>
             </div>
 
             <PostTable isLoading={isLoading} post={post} isFetching={isFetching} setItemEdit={setItemEdit}/>
@@ -63,8 +65,9 @@ const Post = () => {
         </div>
     </div>
     </main>
-
-    {store.isAdd && <ModalAddPost  itemEdit={itemEdit} position="center"/>}
+    <AnimatePresence >
+        {store.isAdd && <ModalAddPost key="modal" itemEdit={itemEdit} position="center"/>} 
+    </AnimatePresence >
 
     {store.error && <ModalError position="center"/>}
     {store.success && <Toast/>}

@@ -209,6 +209,13 @@ function checkUpdate($object)
     checkQuery($query, "There's a problem processing your request. (update)");
     return $query;
 }
+// Update 
+function checkReadByFeature($object)
+{
+    $query = $object->readByFeature();
+    checkQuery($query, "There's a problem processing your request. (read feature)");
+    return $query;
+}
 
 // Active 
 function checkActive($object)

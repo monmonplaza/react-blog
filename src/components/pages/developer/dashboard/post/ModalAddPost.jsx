@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {motion} from 'framer-motion'
 import { LiaTimesSolid } from 'react-icons/lia'
 import { Formik, Form } from 'formik'
 
@@ -28,15 +28,19 @@ const ModalAddPost = ({itemEdit, position }) => {
         dispatch
       );
     
-      const {
-        isLoading,
-        isFetching,
-        error,
-        data: category,
+      const { data: category,
       } = useQueryData(
         `/v1/category`, // endpoint
         "get", // method
         "category" // key
+      );
+
+
+      const { data: tag,
+      } = useQueryData(
+        `/v1/tag`, // endpoint
+        "get", // method
+        "tag" // key
       );
 
 
@@ -72,6 +76,8 @@ const ModalAddPost = ({itemEdit, position }) => {
         post_photo: itemEdit ? itemEdit.post_photo : "",
         post_title : itemEdit ? itemEdit.post_title : "",
         post_category_id : itemEdit ? itemEdit.post_category_id : "",
+        post_tag_id : itemEdit ? itemEdit.post_tag_id : "",
+        post_is_featured : itemEdit ? itemEdit.post_is_featured : 0,
         post_article : itemEdit ? itemEdit.post_article : "",
         post_author : itemEdit ? itemEdit.post_author : "",
         post_publish_date : itemEdit ? itemEdit.post_publish_date : "",
@@ -87,7 +93,10 @@ const ModalAddPost = ({itemEdit, position }) => {
     })
   return (
     <ModalWrapper position={position}>
-    <div className="main-modal w-[900px] bg-secondary text-content">
+    <motion.div className="main-modal w-[900px] bg-secondary text-content"  
+         initial={{ opacity: 0, y:"50px" }}
+         animate={{ opacity: 1, y:"0"}}
+         exit={{ opacity: 0, y:"50px" }}>
               <div className="modal-header p-4 relative">
                   <h2>New post</h2>
                   <button className='absolute top-[25px] right-4' onClick={handleClose}><LiaTimesSolid/></button>
@@ -165,14 +174,22 @@ const ModalAddPost = ({itemEdit, position }) => {
                                         </div>
 
                                         <div className="input-wrap">
-                                            <InputText
-                                                label="Tag"
-                                                type="text"
-                                                name="post_category"
-                                            />
-
-                                            
+                                        <InputSelect
+                                            label="Tag"
+                                            type="text"
+                                            name="post_tag_id">
+                                                {tag?.data.map((item, key)=> (
+                                                    <React.Fragment key={key}>
+                                                        <option hidden>Select</option>
+                                                        <option value={item.tag_aid} >{item.tag_title}</option>
+                                                    </React.Fragment >
+                                                )
+                                            )} 
+                                        </InputSelect>
                                         </div>
+                             
+
+                                  
 
                                         <div className="input-wrap">
                                         <InputSelect
@@ -186,6 +203,19 @@ const ModalAddPost = ({itemEdit, position }) => {
                                                     </React.Fragment >
                                                 )
                                             )} 
+                                        </InputSelect>
+                                        </div>
+
+
+                                        <div className="input-wrap">
+                                        <InputSelect
+                                            label="Is Featured"
+                                            type="text"
+                                            name="post_is_featured">
+                                                <option hidden>Select</option>
+                                                <option value="1" >Yes</option>
+                                                <option value="0" >No</option>
+                                               
                                         </InputSelect>
                                         </div>
                              
@@ -217,7 +247,7 @@ const ModalAddPost = ({itemEdit, position }) => {
                                           label="Article"
                                           type="text"
                                           name="post_article"
-                                          className='h-[29.7rem] resize-none'
+                                          className='h-[37.5rem] resize-none'
                                       />
                                   </div>
                               </div>
@@ -225,15 +255,21 @@ const ModalAddPost = ({itemEdit, position }) => {
                             </div>
                       </div>
 
-                      <div className='form-action max-w-[400px] ml-auto w-full'>
-                          <button className='btn btn-form btn--accent' type="submit"> {mutation.isPending ? <SpinnerButton/> : "Add"}</button>
-                          <button className='btn btn-form btn--cancel' type="button" onClick={handleClose}>Cancel</button>
+                      <div className='form-action max-w-[400px] ml-auto w-full'                      >
+                          <motion.button className='btn btn-form btn--accent' type="submit"
+                          
+                          whileTap={{ scale: 0.97 }}
+                          
+                          > {mutation.isPending ? <SpinnerButton/> : "Add"}</motion.button>
+                          <motion.button className='btn btn-form btn--cancel' type="button" onClick={handleClose}
+                          
+                          whileTap={{ scale: 0.97 }}>Cancel</motion.button>
                       </div>
                   </Form>)}}
                   
                   </Formik>
               </div>
-      </div>
+      </motion.div>
   </ModalWrapper>
 
   )

@@ -10,6 +10,7 @@ import Markdown from 'react-markdown'
 
 const Single = () => {
     const id = getUrlParam().get('id')
+    const [uid, setUid] = React.useState(id)
 
     const {
         isLoading,
@@ -19,10 +20,41 @@ const Single = () => {
       } = useQueryData (
        `/v1/post/${id}`, // endpoint
        "get", // method
-       "post", // key
+       ["post",  uid], // key
       );
 
-      
+      const {
+        isLoading: AllIsLoading,
+        data: allPost,
+      } = useQueryData (
+       `/v1/post`, // endpoint
+       "get", // method
+       "allPost", // key
+      );
+
+
+
+
+
+      function findIndexById(idToFind, dataArray) {
+        for (let i = 0; i < dataArray.length; i++) {
+          if (dataArray[i].post_aid === idToFind) {
+            return i;
+          }
+        }
+        return -1; // If the ID is not found
+      }
+
+
+      const index = findIndexById(!isLoading && post?.data[0].post_aid, !AllIsLoading && allPost?.data);
+
+      console.log(index)
+
+
+
+
+      const getRandomPostPrev = () => (index !== -1) && index -1;
+      const getRandomPostNext = () => (index !== -1) && index + 1;
 
 
       const {
@@ -35,6 +67,9 @@ const Single = () => {
        "get", // method
        "postx", // key
       );
+
+
+      const handleChangeURL = () => setUid(getUrlParam().get('id'))
 
 
 
@@ -56,7 +91,6 @@ const Single = () => {
                   <div className="container">
                       <div className='grid md:grid-cols-[2fr_1fr] gap-10'>
 
-
                             <div>
                                 <img src={`${devBaseImgUrl}/${post?.data[0].post_photo}`} alt="" />
 
@@ -69,6 +103,19 @@ const Single = () => {
                                     {post?.data[0].post_article}
                                 </Markdown > 
                               </article>
+
+
+                              <div className='flex justify-between items-center'>
+                                <Link onClick = {()=> handleChangeURL()} to={`/single?id=${getRandomPostPrev()}`} className="prev flex items-center gap-2  bg-secondary p-1 rounded-lg">
+                                    <img src={`${devBaseImgUrl}/${getRandomPostPrev.post_photo}`} alt="" className='size-[80px]  object-cover rounded-lg'/>
+                                    <h5 className='text-sm truncate w-[150px]'>{getRandomPostPrev.post_title}</h5>
+                                </Link>
+
+                                <Link onClick = {()=> handleChangeURL()} to={`/single?id=${getRandomPostNext()}`} className="next flex items-center gap-2 bg-secondary p-1 rounded-lg">
+                                    <img src={`${devBaseImgUrl}/${getRandomPostNext.post_photo}`} alt="" className='size-[80px]  object-cover rounded-lg'/>
+                                    <h5 className='text-sm truncate w-[150px]'>{getRandomPostNext.post_title}</h5>
+                                </Link>
+                              </div>
                             </div>
 
                           <aside >
@@ -101,7 +148,6 @@ const Single = () => {
                                                     <h4 className='mb-0'>{item.post_title}</h4>
                                                     <small>{item.post_publish_date}</small>
 
-                                                    {console.log(item)}
                                                 </div>
                                             </div>
                                         ))
